@@ -5,6 +5,7 @@ export interface IUser extends Document {
   middleName: string;
   lastName: string;
   fullName?: string;
+  imagePath?: string;
   email?: string;
   phone?: string;
   password?: string;
@@ -73,6 +74,7 @@ const UsersSchema = new Schema<IUser>({
   middleName: { type: String, required: [true, "Please Enter Middle Name"] },
   lastName: { type: String, required: [true, "Please Enter Last Name"] },
   fullName: String,
+  imagePath : String,
   email: String,
   phone: String,
   password: String,

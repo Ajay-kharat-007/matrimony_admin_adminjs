@@ -3,9 +3,8 @@ import AdminJSExpress from '@adminjs/express';
 import express from 'express';
 import * as AdminJSMongoose from '@adminjs/mongoose';
 import mongoose from 'mongoose';
-import { Category } from '../models/Category.model.js';
 import { UsersModel } from '../models/User.model.js';
-import { Components, componentLoader } from './Components.js';
+import { componentLoader } from './Components.js';
 const PORT = 3000;
 AdminJS.registerAdapter({
     Resource: AdminJSMongoose.Resource,
@@ -17,29 +16,10 @@ const start = async () => {
     const admin = new AdminJS({
         resources: [
             {
-                resource: Category,
-                options: {
-                    id: 'Profile',
-                    parent: { name: "" },
-                    properties: {
-                        title: {
-                            type: 'string',
-                            components: {
-                                list: Components.MyInput
-                            }
-                        }
-                    },
-                    actions: {
-                        myCustomAction: {
-                            actionType: 'record',
-                        }
-                    }
-                }
-            },
-            {
                 resource: UsersModel,
                 options: {
-                    parent: { name: "" }
+                    id: 'Users',
+                    parent: { name: "" },
                 }
             }
         ],
