@@ -18,7 +18,7 @@ const MyStatusComponent = (props) => {
   };
 
 //   return <img style={style} src={imagePath} alt="Your Image" />;
-  return <h1 style={style}>{record.params['status'].toUpperCase()}</h1>
+  return <h1 style={style}>{record.params[property.name].toUpperCase()}</h1>
 };
 
 export default MyStatusComponent;

@@ -66,13 +66,26 @@ const start = async () => {
               id: "image",
               type: 'string',
               components: {
-                list: Components.MyInput
+                list: Components.MyInput,
+                show : Components.MyImage
               }
             },
             status : {
               id: "status",
               components : {
                 list : Components.MyStatus
+              }
+            },
+            role : {
+              components : {
+                list : Components.MyStatus,
+                show : Components.MyStatus,
+              }
+            },
+            gender : {
+              components : {
+                list : Components.MyStatus,
+                show : Components.MyStatus,
               }
             }
           },
@@ -217,16 +230,24 @@ const start = async () => {
 
           listProperties: [
             "image",
-            "email",
             "fullName",
             "age",
             "gender",
+            "email",
             "phone",
-            "firstName",
-            "middleName",
-            "lastName",
-            "status"
+            "role",
+            "status",
           ],
+          showProperties : [
+            "image",
+            "fullName",
+            "age",
+            "gender",
+            "email",
+            "phone",
+            "role",
+            "status",
+          ]
           // hooks: {
           //   after: async (request, response, context) => {
           //     // context.record contains the fetched record
@@ -348,7 +369,9 @@ const start = async () => {
             "age",
             "gender",
             "email",
-            "phone"
+            "phone",
+            "role",
+            "status"
           ],
           properties: {
             image: {
@@ -357,15 +380,34 @@ const start = async () => {
                 show: Components.MyImage
               }
             },
+            status : {
+              components : {
+                list : Components.MyStatus,
+                show : Components.MyStatus,
+              }
+            },
+            role : {
+              components : {
+                list : Components.MyStatus,
+                show : Components.MyStatus,
+              }
+            },
+            gender : {
+              components : {
+                list : Components.MyStatus,
+                show : Components.MyStatus,
+              }
+            }
           },
           listProperties: [
             "image",
             "fullName",
-            "firstName",
-            "middleName",
-            "lastName",
+            "age",
+            "gender",
             "email",
             "phone",
+            "role",
+            "status"
           ],
         }
       },
@@ -378,12 +420,15 @@ const start = async () => {
     ],
     branding: {
       companyName: "धर्मादाय संस्था",
-      // logo: 'http://localhost:5001/vaisha-vani-logo.png',
-      logo: false,
+      logo: 'http://localhost:5001/100x100.png',
+      // logo: false,
       favicon: 'http://localhost:5001/vaishya vani.png'
     },
     assets: {
       styles: ['./styles.css']
+    },
+    dashboard : {
+      component : Components.MyDashboard
     },
     componentLoader,
     rootPath: "/admin"

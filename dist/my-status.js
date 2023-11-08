@@ -12,6 +12,6 @@ const MyStatusComponent = (props) => {
         alignItems: "center",
         color: record.params['status'] == "active" ? "green" : "red"
     };
-    return React.createElement("h1", { style: style }, record.params['status'].toUpperCase());
+    return React.createElement("h1", { style: style }, record.params[property.name].toUpperCase());
 };
 export default MyStatusComponent;
