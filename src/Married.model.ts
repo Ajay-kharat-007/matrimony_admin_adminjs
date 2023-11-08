@@ -5,9 +5,12 @@ export interface IUser extends Document {
   middleName: string;
   lastName: string;
   fullName?: string;
+  age?: string;
+  gender?: string;
   email?: string;
   phone?: string;
   image?: string;
+  role?: string;
 }
 
 const UsersSchema = new Schema<IUser>({
@@ -15,9 +18,12 @@ const UsersSchema = new Schema<IUser>({
   middleName: { type: String, required: [true, "Please Enter Middle Name"] },
   lastName: { type: String, required: [true, "Please Enter Last Name"] },
   fullName: String,
+  age: String,
+  gender: String,
   email: String,
   phone: String,
-  image : String
+  image: String,
+  role : String
 })
 
 export const MarriedUsersModel = model<IUser>("MarriedUsers", UsersSchema);

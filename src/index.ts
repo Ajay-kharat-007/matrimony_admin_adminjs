@@ -55,84 +55,144 @@ const start = async () => {
 
   const admin = new AdminJS({
     resources: [
-      // {
-      //   resource: UsersModel,
-      //   options: {
-      //     id: 'Users',
-      //     parent: { name: "" },
-      //     properties: {
-      //       imagePath: {
-      //         id: "image",
-      //         type: 'string',
-      //         components: {
-      //           list: Components.MyInput
-      //         }
-      //       }
-      //     },
-      //     listProperties: [
-      //       "imagePath",
-      //       "email",
-      //       "fullName",
-      //       "dateOfBirth",
-      //       "height",
-      //       "education",
-      //       "specsOrContactLenses",
-      //       "physique",
-      //       "skinTone",
-      //       "phone",
-      //       "status",
-      //     ],
-      //     // hooks: {
-      //     //   after: async (request, response, context) => {
-      //     //     // context.record contains the fetched record
-      //     //     const { record } = context;
-      //     //     localStorage.setItem("its working", "true")
-      //     //     // Add a custom property to the record
-      //     //     record.params.customProperty = "Custom Value";
-      //     //   },
-      //     // },
-      //     // actions: {
-      //     // myCustomAction: {
-      //     // actionType: 'record',
-      //     // component: {
-      //     //   edit : Components.MyInput
-      //     // },
-      //     // handler: (request, response, context) => {
-      //     //   const { record, currentAdmin } = context
-      //     //   console.log("the context", context)
-      //     //   return {
-      //     //     record: record.toJSON(currentAdmin),
-      //     //     msg: "Hello World !!"
-      //     //   }
-      //     // }
-      //     // }
-      //     // }
-      //     // href: ({ h, resource }) => {
-      //     //   return h.resourceActionUrl({
-      //     //     resourceId: resource.decorate().id(),
-      //     //     actionName: 'list',
-      //     //     params: {
-      //     //       'filters.status': 'active',
-      //     //     },
-      //     //   })
-      //     // },
-      //     // listProperties: ['title'],
-      //     // filterProperties: ['title'],
-      //     // editProperties: ['title'],
-      //     // showProperties: ['title'],
-      //     // properties: {
-      //     // title: {
-      //     //   isVisible: {
-      //     //     list: true, edit: false, filter: true, show: true
-      //     //   }
-      //     // }
-      //     // }
-      //   }
-      // },
+      {
+        resource: UsersModel,
+        options: {
+          id: 'Users',
+          parent: { name: "" },
+          properties: {
+            image: {
+              id: "image",
+              type: 'string',
+              components: {
+                list: Components.MyInput
+              }
+            }
+          },
+          actions : {
+            delete: {
+              // isAccessible :  ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
+              actionType: 'record',
+              component: false,
+              handler: async (request, _response, context) => {
+                const { record, resource, currentAdmin, h } = context;
+
+                if (!request.params.recordId || !record) {
+                  throw new NotFoundError(['You have to pass "recordId" to Delete Action'].join('\n'), 'Action#handler');
+                }
+
+                try {
+                  await UsersModel.findByIdAndDelete(record.params._id);
+                } catch (error) {
+                  console.log(error)
+                }
+
+                return {
+                  record: record.toJSON(currentAdmin),
+                  redirectUrl: h.resourceUrl({
+                    resourceId: resource._decorated?.id() || resource.id()
+                  }),
+                  notice: {
+                    message: 'successfullyDeleted',
+                    type: 'success'
+                  }
+                };
+              },
+
+              // parent : 'More',
+            },
+            married: {
+              actionType: 'record',
+              component: false,
+              handler: async(request, response, context) => {
+                const { record, resource, currentAdmin, h } = context
+                console.log("the context", context)
+                if (!request.params.recordId || !record) {
+                  throw new NotFoundError(['You have to pass "recordId" to Delete Action'].join('\n'), 'Action#handler');
+                }
+                try {
+                  console.log("the record", record)
+                  await MarriedUsersModel.create({...record.params})
+                  await UsersModel.findByIdAndDelete(record.params._id);
+                } catch (error) {
+                  console.log(error)
+                }
+
+                return {
+                  record: record.toJSON(currentAdmin),
+                  redirectUrl: h.resourceUrl({
+                    resourceId: resource._decorated?.id() || resource.id()
+                  }),
+                  notice: {
+                    message: 'User Status Changed',
+                    type: 'success'
+                  }
+                }
+              }
+              }
+          },
+          listProperties: [
+            "image",
+            "email",
+            "fullName",
+            "age",
+            "gender",
+            "phone",
+            "firstName",
+            "middleName",
+            "lastName",
+          ],
+          // hooks: {
+          //   after: async (request, response, context) => {
+          //     // context.record contains the fetched record
+          //     const { record } = context;
+          //     localStorage.setItem("its working", "true")
+          //     // Add a custom property to the record
+          //     record.params.customProperty = "Custom Value";
+          //   },
+          // },
+          // actions: {
+          // myCustomAction: {
+          // actionType: 'record',
+          // component: {
+          //   edit : Components.MyInput
+          // },
+          // handler: (request, response, context) => {
+          //   const { record, currentAdmin } = context
+          //   console.log("the context", context)
+          //   return {
+          //     record: record.toJSON(currentAdmin),
+          //     msg: "Hello World !!"
+          //   }
+          // }
+          // }
+          // }
+          // href: ({ h, resource }) => {
+          //   return h.resourceActionUrl({
+          //     resourceId: resource.decorate().id(),
+          //     actionName: 'list',
+          //     params: {
+          //       'filters.status': 'active',
+          //     },
+          //   })
+          // },
+          // listProperties: ['title'],
+          // filterProperties: ['title'],
+          // editProperties: ['title'],
+          // showProperties: ['title'],
+          // properties: {
+          // title: {
+          //   isVisible: {
+          //     list: true, edit: false, filter: true, show: true
+          //   }
+          // }
+          // }
+        }
+      },
       {
         resource: MarriedUsersModel,
         options: {
-          id: 'Users',
+          // id: 'Users',
           parent: { name: '' },
           actions: {
             delete: {
@@ -176,33 +236,32 @@ const start = async () => {
                   throw new NotFoundError('no records were selected.', 'Action#handler');
                 }
 
-                console.log("resources", resource)
+                console.log("the resource of ", resource._decorated?.id(), resource.id(), resource.options?.id())
 
-                  await Promise.all(records.map(record => MarriedUsersModel.findByIdAndDelete(record.params._id)));
-                  return {
-                    records: records.map(record => record.toJSON(context.currentAdmin)),
-                    redirectUrl: h.resourceUrl({
-                      resourceId: resource.options?.id() || resource.id()
-                    }),
-                    notice: {
-                      message: records.length > 1 ? 'successfullyBulkDeleted_plural' : 'successfullyBulkDeleted',
-                      options: {
-                        count: records.length
-                      },
-                      resourceId: resource.id(),
-                      type: 'success'
+                await Promise.all(records.map(record => MarriedUsersModel.findByIdAndDelete(record.params._id)));
+                return {
+                  records: records.map(record => record.toJSON(context.currentAdmin)),
+                  redirectUrl: h.resourceUrl({
+                    resourceId: resource._decorated?.id() || resource.options?.id() || resource.id()
+                  }),
+                  notice: {
+                    message: records.length > 1 ? 'successfullyBulkDeleted_plural' : 'successfullyBulkDeleted',
+                    options: {
+                      count: records.length
                     },
-                  };
-               
+                    resourceId: resource.id(),
+                    type: 'success'
+                  },
+                };
+
               }
             }
           },
           showProperties: [
             "image",
             "fullName",
-            "firstName",
-            "middleName",
-            "lastName",
+            "age",
+            "gender",
             "email",
             "phone"
           ],

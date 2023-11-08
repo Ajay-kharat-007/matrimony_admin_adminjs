@@ -4,8 +4,11 @@ const UsersSchema = new Schema({
     middleName: { type: String, required: [true, "Please Enter Middle Name"] },
     lastName: { type: String, required: [true, "Please Enter Last Name"] },
     fullName: String,
+    age: String,
+    gender: String,
     email: String,
     phone: String,
-    image: String
+    image: String,
+    role: String
 });
 export const MarriedUsersModel = model("MarriedUsers", UsersSchema);

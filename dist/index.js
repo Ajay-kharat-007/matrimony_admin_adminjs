@@ -50,9 +50,92 @@ const start = async () => {
     const admin = new AdminJS({
         resources: [
             {
-                resource: MarriedUsersModel,
+                resource: UsersModel,
                 options: {
                     id: 'Users',
+                    parent: { name: "" },
+                    properties: {
+                        image: {
+                            id: "image",
+                            type: 'string',
+                            components: {
+                                list: Components.MyInput
+                            }
+                        }
+                    },
+                    actions: {
+                        delete: {
+                            actionType: 'record',
+                            component: false,
+                            handler: async (request, _response, context) => {
+                                const { record, resource, currentAdmin, h } = context;
+                                if (!request.params.recordId || !record) {
+                                    throw new NotFoundError(['You have to pass "recordId" to Delete Action'].join('\n'), 'Action#handler');
+                                }
+                                try {
+                                    await UsersModel.findByIdAndDelete(record.params._id);
+                                }
+                                catch (error) {
+                                    console.log(error);
+                                }
+                                return {
+                                    record: record.toJSON(currentAdmin),
+                                    redirectUrl: h.resourceUrl({
+                                        resourceId: resource._decorated?.id() || resource.id()
+                                    }),
+                                    notice: {
+                                        message: 'successfullyDeleted',
+                                        type: 'success'
+                                    }
+                                };
+                            },
+                        },
+                        married: {
+                            actionType: 'record',
+                            component: false,
+                            handler: async (request, response, context) => {
+                                const { record, resource, currentAdmin, h } = context;
+                                console.log("the context", context);
+                                if (!request.params.recordId || !record) {
+                                    throw new NotFoundError(['You have to pass "recordId" to Delete Action'].join('\n'), 'Action#handler');
+                                }
+                                try {
+                                    console.log("the record", record);
+                                    await MarriedUsersModel.create({ ...record.params });
+                                    await UsersModel.findByIdAndDelete(record.params._id);
+                                }
+                                catch (error) {
+                                    console.log(error);
+                                }
+                                return {
+                                    record: record.toJSON(currentAdmin),
+                                    redirectUrl: h.resourceUrl({
+                                        resourceId: resource._decorated?.id() || resource.id()
+                                    }),
+                                    notice: {
+                                        message: 'User Status Changed',
+                                        type: 'success'
+                                    }
+                                };
+                            }
+                        }
+                    },
+                    listProperties: [
+                        "image",
+                        "email",
+                        "fullName",
+                        "age",
+                        "gender",
+                        "phone",
+                        "firstName",
+                        "middleName",
+                        "lastName",
+                    ],
+                }
+            },
+            {
+                resource: MarriedUsersModel,
+                options: {
                     parent: { name: '' },
                     actions: {
                         delete: {
@@ -89,12 +172,12 @@ const start = async () => {
                                 if (!records || !records.length) {
                                     throw new NotFoundError('no records were selected.', 'Action#handler');
                                 }
-                                console.log("resources", resource);
+                                console.log("the resource of ", resource._decorated?.id(), resource.id(), resource.options?.id());
                                 await Promise.all(records.map(record => MarriedUsersModel.findByIdAndDelete(record.params._id)));
                                 return {
                                     records: records.map(record => record.toJSON(context.currentAdmin)),
                                     redirectUrl: h.resourceUrl({
-                                        resourceId: resource.options?.id() || resource.id()
+                                        resourceId: resource._decorated?.id() || resource.options?.id() || resource.id()
                                     }),
                                     notice: {
                                         message: records.length > 1 ? 'successfullyBulkDeleted_plural' : 'successfullyBulkDeleted',
@@ -111,9 +194,8 @@ const start = async () => {
                     showProperties: [
                         "image",
                         "fullName",
-                        "firstName",
-                        "middleName",
-                        "lastName",
+                        "age",
+                        "gender",
                         "email",
                         "phone"
                     ],
