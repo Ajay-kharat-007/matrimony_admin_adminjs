@@ -61,6 +61,12 @@ const start = async () => {
                             components: {
                                 list: Components.MyInput
                             }
+                        },
+                        status: {
+                            id: "status",
+                            components: {
+                                list: Components.MyStatus
+                            }
                         }
                     },
                     actions: {
@@ -118,6 +124,82 @@ const start = async () => {
                                     }
                                 };
                             }
+                        },
+                        new: {
+                            name: 'new',
+                            layout: [
+                                ['@Header', { children: 'Enter user details' }],
+                                [
+                                    { flexDirection: 'row', flex: true },
+                                    [
+                                        ['firstName', { flexGrow: 1, marginRight: '10px' }],
+                                        ['middleName', { flexGrow: 1, marginRight: '10px' }],
+                                        ['lastName', { flexGrow: 1 }],
+                                    ]
+                                ],
+                                [
+                                    { flexDirection: 'row', flex: true },
+                                    [
+                                        ['fullName', { flexGrow: 1, marginRight: '10px' }],
+                                        ['age', { flexGrow: 1, marginRight: '10px' }],
+                                        ['image', { flexGrow: 1 }],
+                                    ]
+                                ],
+                                [
+                                    { flexDirection: 'row', flex: true },
+                                    [
+                                        ['email', { flexGrow: 1, marginRight: '10px' }],
+                                        ['height', { flexGrow: 1, marginRight: '10px' }],
+                                        ['phone', { flexGrow: 1 }],
+                                    ]
+                                ],
+                                [
+                                    { flexDirection: 'row', flex: true },
+                                    [
+                                        ['gender', { flexGrow: 1, marginRight: '10px' }],
+                                        ['status', { flexGrow: 1, marginRight: '10px' }],
+                                        ['role', { flexGrow: 1 }],
+                                    ]
+                                ]
+                            ]
+                        },
+                        edit: {
+                            name: 'edit',
+                            layout: [
+                                ['@Header', { children: 'Enter user details' }],
+                                [
+                                    { flexDirection: 'row', flex: true },
+                                    [
+                                        ['firstName', { flexGrow: 1, marginRight: '10px' }],
+                                        ['middleName', { flexGrow: 1, marginRight: '10px' }],
+                                        ['lastName', { flexGrow: 1 }],
+                                    ]
+                                ],
+                                [
+                                    { flexDirection: 'row', flex: true },
+                                    [
+                                        ['fullName', { flexGrow: 1, marginRight: '10px' }],
+                                        ['age', { flexGrow: 1, marginRight: '10px' }],
+                                        ['image', { flexGrow: 1 }],
+                                    ]
+                                ],
+                                [
+                                    { flexDirection: 'row', flex: true },
+                                    [
+                                        ['email', { flexGrow: 1, marginRight: '10px' }],
+                                        ['height', { flexGrow: 1, marginRight: '10px' }],
+                                        ['phone', { flexGrow: 1 }],
+                                    ]
+                                ],
+                                [
+                                    { flexDirection: 'row', flex: true },
+                                    [
+                                        ['gender', { flexGrow: 1, marginRight: '10px' }],
+                                        ['status', { flexGrow: 1, marginRight: '10px' }],
+                                        ['role', { flexGrow: 1 }],
+                                    ]
+                                ]
+                            ]
                         }
                     },
                     listProperties: [
@@ -130,6 +212,7 @@ const start = async () => {
                         "firstName",
                         "middleName",
                         "lastName",
+                        "status"
                     ],
                 }
             },
@@ -217,7 +300,7 @@ const start = async () => {
                         "phone",
                     ],
                 }
-            }
+            },
         ],
         branding: {
             companyName: "धर्मादाय संस्था",

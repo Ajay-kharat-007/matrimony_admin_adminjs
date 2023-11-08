@@ -9,6 +9,7 @@ import { MarriedUsersModel } from './Married.model.js'
 import MongoStore from 'connect-mongo'
 import path from 'path'
 import * as url from 'url'
+import { InactiveUsersModel } from './Inactive.model.js'
 
 const PORT = 3000
 
@@ -67,9 +68,15 @@ const start = async () => {
               components: {
                 list: Components.MyInput
               }
+            },
+            status : {
+              id: "status",
+              components : {
+                list : Components.MyStatus
+              }
             }
           },
-          actions : {
+          actions :{
             delete: {
               // isAccessible :  ({ currentAdmin }) => currentAdmin && currentAdmin.role === 'admin',
               actionType: 'record',
@@ -129,8 +136,85 @@ const start = async () => {
                   }
                 }
               }
+              },
+             new : {
+              name : 'new',
+              layout : [
+                ['@Header', {children : 'Enter user details'}],
+                [
+                  {flexDirection: 'row', flex:true},
+                  [
+                    ['firstName', {flexGrow: 1, marginRight: '10px'}],
+                    ['middleName', {flexGrow: 1, marginRight: '10px'}],
+                    ['lastName', {flexGrow: 1}],
+                  ]
+                ],
+                [
+                  {flexDirection: 'row', flex:true},
+                  [
+                    ['fullName', {flexGrow: 1, marginRight: '10px'}],
+                    ['age', {flexGrow: 1, marginRight: '10px'}],
+                    ['image', {flexGrow: 1}],
+                  ]
+                ],
+                [
+                  {flexDirection: 'row', flex:true},
+                  [
+                    ['email', {flexGrow: 1, marginRight: '10px'}],
+                    ['height', {flexGrow: 1, marginRight: '10px'}],
+                    ['phone', {flexGrow: 1}],
+                  ]
+                ],
+                [
+                  {flexDirection: 'row', flex:true},
+                  [
+                    ['gender', {flexGrow: 1, marginRight: '10px'}],
+                    ['status', {flexGrow: 1, marginRight: '10px'}],
+                    ['role', {flexGrow: 1}],
+                  ]
+                ]
+              ]
+            },
+              edit : {
+                name : 'edit',
+                layout :[
+                  ['@Header', {children : 'Enter user details'}],
+                  [
+                    {flexDirection: 'row', flex:true},
+                    [
+                      ['firstName', {flexGrow: 1, marginRight: '10px'}],
+                      ['middleName', {flexGrow: 1, marginRight: '10px'}],
+                      ['lastName', {flexGrow: 1}],
+                    ]
+                  ],
+                  [
+                    {flexDirection: 'row', flex:true},
+                    [
+                      ['fullName', {flexGrow: 1, marginRight: '10px'}],
+                      ['age', {flexGrow: 1, marginRight: '10px'}],
+                      ['image', {flexGrow: 1}],
+                    ]
+                  ],
+                  [
+                    {flexDirection: 'row', flex:true},
+                    [
+                      ['email', {flexGrow: 1, marginRight: '10px'}],
+                      ['height', {flexGrow: 1, marginRight: '10px'}],
+                      ['phone', {flexGrow: 1}],
+                    ]
+                  ],
+                  [
+                    {flexDirection: 'row', flex:true},
+                    [
+                      ['gender', {flexGrow: 1, marginRight: '10px'}],
+                      ['status', {flexGrow: 1, marginRight: '10px'}],
+                      ['role', {flexGrow: 1}],
+                    ]
+                  ]
+                ]
               }
           },
+
           listProperties: [
             "image",
             "email",
@@ -141,6 +225,7 @@ const start = async () => {
             "firstName",
             "middleName",
             "lastName",
+            "status"
           ],
           // hooks: {
           //   after: async (request, response, context) => {
@@ -283,7 +368,13 @@ const start = async () => {
             "phone",
           ],
         }
-      }
+      },
+      // {
+      //   resource : InactiveUsersModel,
+      //   options : {
+      //     parent : {name : ''}
+      //   }
+      // }
     ],
     branding: {
       companyName: "धर्मादाय संस्था",

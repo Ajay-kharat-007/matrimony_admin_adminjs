@@ -172,12 +172,14 @@ export interface IUser extends Document {
   lastName: string;
   fullName?: string;
   age?: string;
-  gender?: string;
+  gender?: "male" | "female";
+  status?: "active" | "inactive";
   email?: string;
+  height?: string;
   phone?: string;
   image?: string;
   password?: string;
-  role?: string;
+  role?:  "admin" | "user";
 }
 
 const UsersSchema = new Schema<IUser>({
@@ -186,12 +188,14 @@ const UsersSchema = new Schema<IUser>({
   lastName: { type: String, required: [true, "Please Enter Last Name"] },
   fullName: String,
   age: String,
-  gender: String,
+  gender: {type : String, enum : ['male', 'female']},
+  status: {type : String, enum : ['active', 'inactive']},
   email: String,
+  height: String,
   phone: String,
   image: String,
   password: String,
-  role: String
+  role: {type : String, enum : ['admin', 'user']}
 })
 
 export const UsersModel = model<IUser>("Users", UsersSchema);

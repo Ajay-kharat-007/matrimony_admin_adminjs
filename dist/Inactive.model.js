@@ -6,7 +6,6 @@ const UsersSchema = new Schema({
     fullName: String,
     age: String,
     gender: { type: String, enum: ['male', 'female'] },
-    status: { type: String, enum: ['active', 'inactive'] },
     email: String,
     height: String,
     phone: String,
@@ -14,4 +13,4 @@ const UsersSchema = new Schema({
     password: String,
     role: { type: String, enum: ['admin', 'user'] }
 });
-export const UsersModel = model("Users", UsersSchema);
+export const InactiveUsersModel = model("InactiveUsers", UsersSchema);
