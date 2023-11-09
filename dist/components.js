@@ -9,4 +9,6 @@ export const Components = {
     MyStatus: componentLoader.add("MyStatus", path.resolve(__dirname, "./my-status")),
     MyImage: componentLoader.add("MyImage", path.resolve(__dirname, "./my-image")),
     MyDashboard: componentLoader.add("MyDashboard", path.resolve(__dirname, "./my-dashboard")),
+    MyShow: componentLoader.add("MyShow", path.resolve(__dirname, "./my-show")),
+    MyBulk: componentLoader.add("MyBulk", path.resolve(__dirname, "./my-bulk")),
 };

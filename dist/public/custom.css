@@ -1,0 +1,115 @@
+/* :root {
+  --topbar-color: white;
+  --sidebar-bg-color: darkgray;
+  --sidebar-color: white;
+  --sidebar-link-color: orange;
+}
+
+section[data-css="sidebar"] {
+  background-color: var(--sidebar-bg-color) !important;
+  color: var(--sidebar-color);
+  border: none;
+}
+
+section[data-css="sidebar"] svg {
+  fill: var(--sidebar-color) !important;
+}
+
+a[data-css="sidebar-logo"] {
+  background-color: black !important;
+}
+
+.adminjs_Input{
+    border-radius: 15px !important;
+    padding: 10px !important;
+}
+
+.adminjs_SortLink{
+    font-size: 25px !important;
+}
+
+.adminjs_Box{
+    font-size: 22px !important;
+}
+
+a[data-css="sidebar-logo"] img {
+  border-radius: 25px;
+}
+
+.sc-iCmkLe {
+  font-size: 30px !important;
+}
+
+section[data-css="sidebar-resources"] {
+  background: var(--sidebar-bg-color) !important;
+  font-size: 30px;
+}
+
+[data-css="sidebar"] section a {
+  background: var(--sidebar-bg-color) !important;
+  color: var(--sidebar-color);
+}
+
+[data-css="sidebar"] a:hover {
+  color: var(--sidebar-link-color);
+} */
+
+.adminjs_Label{
+    font-size: 15px !important;
+}
+
+.adminjs_Input{
+    border-radius: 12px !important;
+    padding: 10px !important;
+    font-size: 16px !important;
+}
+
+.css-p6wpjx-control{
+    border-radius: 12px !important;
+    padding: 10px !important;
+    font-size: 15px !important;
+}
+
+.react-datepicker-wrapper{
+    border-radius: 12px !important;
+    padding: 10px !important;
+    font-size: 16px !important;
+}
+
+.adminjs_SortLink{
+    font-size: 18px !important;
+}
+
+.adminjs_Box{
+    font-size: 16px !important;
+}
+
+.sc-iCmkLe{
+    font-size: 18px !important;
+}
+
+.adminjs_H5{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.adminjs_Text{
+    color : rgb(48, 64, 214);
+}
+
+.adminjs_Logo h1{
+  font-size: 25px !important;
+  color: orange !important;
+}
+
+[data-css="Users-bulkUpload-button"] {
+  border-radius: 5px !important;
+  font-size: 14px !important;
+  padding:  10px 15px !important;
+} 
+
+[data-css="Users-bulkUpload-button"]:hover {
+  cursor: pointer !important;
+} 
+
