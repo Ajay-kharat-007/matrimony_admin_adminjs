@@ -21,8 +21,8 @@ const authenticate = async (email, password) => {
         }
         console.log(user);
         if (user.password == password) {
+            return Promise.resolve(user);
             if (user.role == "admin") {
-                return Promise.resolve(user);
             }
             else {
                 console.log("You are not admin");
@@ -276,6 +276,68 @@ const start = async () => {
                                 };
                             },
                         },
+                        bulkDelete: {
+                            actionType: 'bulk',
+                            component: false,
+                            handler: async (request, response, context) => {
+                                const { records, resource, h } = context;
+                                if (!records || !records.length) {
+                                    throw new NotFoundError('no records were selected.', 'Action#handler');
+                                }
+                                try {
+                                    await Promise.all(records.map(record => UsersModel.findByIdAndDelete(record.params._id)));
+                                    console.log(h.resourceUrl({
+                                        resourceId: resource._decorated?.id() || resource.options?.id() || resource.id()
+                                    }));
+                                }
+                                catch (err) {
+                                    console.log(err);
+                                }
+                                return {
+                                    records: records.map(record => record.toJSON(context.currentAdmin)),
+                                    redirectUrl: '/admin/resources/Users?refresh=true',
+                                    notice: {
+                                        message: records.length > 1 ? 'successfullyBulkDeleted_plural' : 'successfullyBulkDeleted',
+                                        options: {
+                                            count: records.length
+                                        },
+                                        resourceId: resource.id(),
+                                        type: 'success'
+                                    },
+                                };
+                            }
+                        },
+                        bulkMarried: {
+                            actionType: 'bulk',
+                            component: false,
+                            handler: async (request, response, context) => {
+                                const { records, resource, h } = context;
+                                if (!records || !records.length) {
+                                    throw new NotFoundError('no records were selected.', 'Action#handler');
+                                }
+                                try {
+                                    records.map(async (elem) => {
+                                        await MarriedUsersModel.create({ ...elem.params });
+                                        await UsersModel.findByIdAndDelete(elem.params._id);
+                                    });
+                                }
+                                catch (err) {
+                                    console.log(err);
+                                }
+                                return {
+                                    records: records.map(record => record.toJSON(context.currentAdmin)),
+                                    redirectUrl: '/admin/resources/Users?refresh=true',
+                                    notice: {
+                                        message: records.length > 1 ? 'successfullyBulkAdded_plural' : 'successfullyBulkAdded',
+                                        options: {
+                                            count: records.length
+                                        },
+                                        resourceId: resource.id(),
+                                        type: 'success'
+                                    },
+                                };
+                            }
+                        },
                         married: {
                             actionType: 'record',
                             component: false,
@@ -286,7 +348,6 @@ const start = async () => {
                                     throw new NotFoundError(['You have to pass "recordId" to Delete Action'].join('\n'), 'Action#handler');
                                 }
                                 try {
-                                    console.log("the record", record);
                                     await MarriedUsersModel.create({ ...record.params });
                                     await UsersModel.findByIdAndDelete(record.params._id);
                                 }
@@ -372,13 +433,18 @@ const start = async () => {
                                 if (!records || !records.length) {
                                     throw new NotFoundError('no records were selected.', 'Action#handler');
                                 }
-                                console.log("the resource of ", resource._decorated?.id(), resource.id(), resource.options?.id());
-                                await Promise.all(records.map(record => MarriedUsersModel.findByIdAndDelete(record.params._id)));
+                                try {
+                                    await Promise.all(records.map(record => MarriedUsersModel.findByIdAndDelete(record.params._id)));
+                                    console.log(h.resourceUrl({
+                                        resourceId: resource._decorated?.id() || resource.options?.id() || resource.id()
+                                    }));
+                                }
+                                catch (err) {
+                                    console.log(err);
+                                }
                                 return {
                                     records: records.map(record => record.toJSON(context.currentAdmin)),
-                                    redirectUrl: h.resourceUrl({
-                                        resourceId: resource._decorated?.id() || resource.options?.id() || resource.id()
-                                    }),
+                                    redirectUrl: '/admin/resources/MarriedUsers?refresh=true',
                                     notice: {
                                         message: records.length > 1 ? 'successfullyBulkDeleted_plural' : 'successfullyBulkDeleted',
                                         options: {

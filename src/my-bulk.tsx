@@ -40,10 +40,25 @@ const MyInputComponent = (props: ActionProps) => {
     }
   };
 
+  const butonStyle = {
+    padding : '10px',
+    border : '2px solid black',
+    borderRadius: '15px',
+    backgroundColor : 'rgb(131, 216, 252)',
+    color : 'black'
+  }
+
+  const divStyle = {
+    display : 'flex',
+    justifyContent : 'space-evenly'
+  }
+
   return (
     <>
+    <div style={divStyle}>
       <input type="file" name="not" id="not" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload</button>
+      <button style={butonStyle} onClick={handleUpload}>Upload csv file</button>
+    </div>
     </>
   );
 };
