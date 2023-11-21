@@ -6,11 +6,11 @@ import mongoose from 'mongoose'
 import { Components, componentLoader } from './components/Components.js'
 import { UsersModel } from './models/User.model.js'
 import { MarriedUsersModel } from './models/Married.model.js'
-import userRoute from './router/userRoutes.js';
-import userdataRoute from './router/userdataRoutes.js';
-import masterRoute from './router/masterRoutes.js';
-import csvRoute from './router/csvRoutes.js';
-import mailRoute from './router/mailRoutes.js'
+import userRoute from './routes/userRoutes.js';
+import userdataRoute from './routes/userdataRoutes.js';
+import masterRoute from './routes/masterRoutes.js';
+import csvRoute from './routes/csvRoutes.js';
+import mailRoute from './routes/mailRoutes.js'
 import bodyParser from 'body-parser'
 import { errorHandler } from './middleware/errorHandler.js'
 import dotenv from 'dotenv'
@@ -245,7 +245,7 @@ const start = async () => {
 
   const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
   app.use(express.static(__dirname + '/public'))
-  app.use(express.static(__dirname + './uploads'))
+  app.use(express.static(__dirname + '../uploads'))
 
 
   const admin = new AdminJS({

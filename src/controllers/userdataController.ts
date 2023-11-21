@@ -77,7 +77,7 @@ export const getAllContact = asyncHandler(async (req: Request, res: Response) =>
 });
 
 const Storage = multer.diskStorage({
-    destination: 'uploads',
+    destination: './uploads',
     filename: (req, file, cb) => {
         cb(null, file.originalname);
     },
