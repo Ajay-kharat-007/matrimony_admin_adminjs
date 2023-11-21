@@ -1,12 +1,12 @@
 import { Schema, model } from "mongoose";
 const UsersSchema = new Schema({
-    firstName: { type: String },
-    middleName: { type: String },
-    lastName: { type: String },
+    firstName: { type: String, required: [true, "Please Enter First Name"] },
+    middleName: { type: String, required: [true, "Please Enter Middle Name"] },
+    lastName: { type: String, required: [true, "Please Enter Last Name"] },
     fullName: String,
     imagePath: String,
-    email: String,
     phone: String,
+    email: String,
     image: String,
     password: String,
     status: { type: String, enum: ["active", "inactive"] },
@@ -14,8 +14,8 @@ const UsersSchema = new Schema({
     maritalStatus: { type: String, enum: ["Unmarried", "Divorced", "Widow/Widower"] },
     dateOfBirth: Date,
     height: String,
-    age: String,
     weight: String,
+    age: String,
     bloodGroup: String,
     whatsappNumber: String,
     parentName: String,
@@ -89,9 +89,9 @@ const UsersSchema = new Schema({
     isSubCastePreferred: { type: String, enum: ["Yes", "No"] },
     isPartnerOutsideMumbaiPreferred: { type: String, enum: ["Yes", "No"] },
     otherExpectationsFromPartner: String,
-    paymentStatus: { type: String, enum: ["Pending", "Successfull"] },
+    paymentStatus: { type: String, enum: ["Pending", "Successful"] },
     subscriptionStartDate: Date,
     subscriptionEndDate: Date,
     role: { type: String, enum: ['admin', 'user'] }
 });
-export const UsersModel = model("Users", UsersSchema);
+export const MarriedUsersModel = model("MarriedUsers", UsersSchema);

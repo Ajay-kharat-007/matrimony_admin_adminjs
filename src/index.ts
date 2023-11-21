@@ -3,21 +3,31 @@ import AdminJSExpress from '@adminjs/express'
 import express from 'express'
 import * as AdminJSMongoose from '@adminjs/mongoose'
 import mongoose from 'mongoose'
-import { Components, componentLoader } from './Components.js'
-import { UsersModel } from './User.model.js'
-import { MarriedUsersModel } from './Married.model.js'
+import { Components, componentLoader } from './components/Components.js'
+import { UsersModel } from './models/User.model.js'
+import { MarriedUsersModel } from './models/Married.model.js'
+import userRoute from './router/userRoutes.js';
+import userdataRoute from './router/userdataRoutes.js';
+import masterRoute from './router/masterRoutes.js';
+import csvRoute from './router/csvRoutes.js';
+import mailRoute from './router/mailRoutes.js'
+import bodyParser from 'body-parser'
+import { errorHandler } from './middleware/errorHandler.js'
+import dotenv from 'dotenv'
+import cors from 'cors'
 import MongoStore from 'connect-mongo'
 import path from 'path'
 import * as url from 'url'
 
-const PORT = 3000
+dotenv.config();
+const PORT = process.env.PORT || 3000;
 
 AdminJS.registerAdapter({
   Resource: AdminJSMongoose.Resource,
   Database: AdminJSMongoose.Database
 })
 
-const authenticate = async (email, password) => {
+const authenticate = async (email: string, password: string) => {
   try {
     const user = await UsersModel.findOne({ email });
     if (!user) {
@@ -25,8 +35,8 @@ const authenticate = async (email, password) => {
     }
     console.log(user);
     if (user.password == password) {
-      return Promise.resolve(user);
       if (user.role == "admin") {
+        return Promise.resolve(user);
       } else {
         console.log("You are not admin");
       }
@@ -37,7 +47,6 @@ const authenticate = async (email, password) => {
     console.error("Authentication error:", err);
   }
 };
-
 
 const start = async () => {
   await mongoose.connect("mongodb+srv://Ajay_3154:RhbKn9sL5CZSKDO4@ajay-kharat.tqbnzca.mongodb.net/admin-panel")
@@ -236,6 +245,8 @@ const start = async () => {
 
   const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
   app.use(express.static(__dirname + '/public'))
+  app.use(express.static(__dirname + './uploads'))
+
 
   const admin = new AdminJS({
     assets: {
@@ -318,12 +329,12 @@ const start = async () => {
                   throw new NotFoundError('no records were selected.', 'Action#handler');
                 }
 
-                try{
+                try {
                   await Promise.all(records.map(record => UsersModel.findByIdAndDelete(record.params._id)));
-                  console.log( h.resourceUrl({
-                      resourceId: resource._decorated?.id() || resource.options?.id() || resource.id()
-                    }),)
-                }catch(err){
+                  console.log(h.resourceUrl({
+                    resourceId: resource._decorated?.id() || resource.options?.id() || resource.id()
+                  }),)
+                } catch (err) {
                   console.log(err)
                 }
 
@@ -351,15 +362,15 @@ const start = async () => {
                   throw new NotFoundError('no records were selected.', 'Action#handler');
                 }
 
-                try{
+                try {
                   // await Promise.all(records.map((record) =>{
                   //   MarriedUsersModel.create({ ...record.params })
                   //   }));
-                  records.map(async(elem:any)=>{
-                    await MarriedUsersModel.create({...elem.params})
+                  records.map(async (elem: any) => {
+                    await MarriedUsersModel.create({ ...elem.params })
                     await UsersModel.findByIdAndDelete(elem.params._id);
                   })
-                }catch(err){
+                } catch (err) {
                   console.log(err)
                 }
 
@@ -413,10 +424,10 @@ const start = async () => {
               name: 'edit',
               layout: layout
             },
-            show : {
-              component : Components.MyShow
+            show: {
+              component: Components.MyShow
             },
-            bulkUpload : {
+            bulkUpload: {
               actionType: 'resource',
               component: Components.MyBulk,
               handler: (request, response, context) => {
@@ -430,7 +441,7 @@ const start = async () => {
           },
           listProperties: properties,
           showProperties: properties,
-          filterProperties : properties
+          filterProperties: properties
           // hooks: {
           //   after: async (request, response, context) => {
           //     // context.record contains the fetched record
@@ -514,13 +525,13 @@ const start = async () => {
                   throw new NotFoundError('no records were selected.', 'Action#handler');
                 }
 
-                try{
+                try {
                   await Promise.all(records.map(record => MarriedUsersModel.findByIdAndDelete(record.params._id)));
-                  console.log( h.resourceUrl({
-                      resourceId: resource._decorated?.id() || resource.options?.id() || resource.id()
-                    }),)
-                    // location.href = "http://localhost:3000/admin"
-                }catch(err){
+                  console.log(h.resourceUrl({
+                    resourceId: resource._decorated?.id() || resource.options?.id() || resource.id()
+                  }),)
+                  // location.href = "http://localhost:3000/admin"
+                } catch (err) {
                   console.log(err)
                 }
 
@@ -550,8 +561,8 @@ const start = async () => {
               name: 'edit',
               layout: layout
             },
-            show : {
-              component : Components.MyShow
+            show: {
+              component: Components.MyShow
             }
           },
           properties: {
@@ -595,8 +606,8 @@ const start = async () => {
     branding: {
       companyName: "धर्मादाय संस्था",
       // logo: 'http://localhost:5001/100x100.png',
-      logo:false,
-      favicon: 'http://localhost:5001/vaishya vani.png',
+      logo: false,
+      favicon: 'http://localhost:3000/vaishya vani.png',
     },
 
     dashboard: {
@@ -628,12 +639,22 @@ const start = async () => {
     }
   )
 
+  app.use(cors())
   app.use(admin.options.rootPath, adminRouter)
+  app.use(bodyParser.json())
+  app.use("/api/users", userRoute)
+  app.use("/api/userdata", userdataRoute)
+  app.use("/api/masters-dropdown", masterRoute);
+  app.use("/mail", mailRoute)
+  app.use("/importUser", csvRoute)
+  app.use("/", (req, res) => {
+    res.send("Server Is Running Perfectly !!")
+  })
+  app.use(errorHandler);
 
   app.listen(PORT, () => {
     console.log(`AdminJS started on http://localhost:${PORT}${admin.options.rootPath}`)
   })
-
 }
 
 start()

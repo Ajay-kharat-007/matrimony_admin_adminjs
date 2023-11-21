@@ -4,7 +4,7 @@ import React from "react";
 const MyInputComponent = (props) => {
   const { record, property } = props;
 
-  const imagePath = "http://localhost:5001/" + record.params['image'];
+  const imagePath = "http://localhost:3000/" + record.params['image'];
 
   const style = {
     borderRadius: "15px",

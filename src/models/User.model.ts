@@ -72,9 +72,9 @@ export interface IUser extends Document {
 }
 
 const UsersSchema = new Schema<IUser>({
-  firstName: { type: String, required: [true, "Please Enter First Name"] },
-  middleName: { type: String, required: [true, "Please Enter Middle Name"] },
-  lastName: { type: String, required: [true, "Please Enter Last Name"] },
+  firstName: { type: String },
+  middleName: { type: String },
+  lastName: { type: String },
   fullName: String,
   imagePath : String,
   email: String,
@@ -161,7 +161,7 @@ const UsersSchema = new Schema<IUser>({
   isSubCastePreferred: { type: String, enum: ["Yes", "No"] },
   isPartnerOutsideMumbaiPreferred: { type: String, enum: ["Yes", "No"] },
   otherExpectationsFromPartner: String,
-  paymentStatus: { type: String, enum: ["Pending", "Successful"] },
+  paymentStatus: { type: String, enum: ["Pending", "Successfull"] },
   subscriptionStartDate: Date,
   subscriptionEndDate: Date,
   role: {type : String, enum : ['admin', 'user']}

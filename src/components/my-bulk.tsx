@@ -21,7 +21,7 @@ const MyInputComponent = (props: ActionProps) => {
       formData.append("file", file);
 
       try {
-        const response = await fetch("http://localhost:5001/importUser", {
+        const response = await fetch("http://localhost:3000/importUser", {
           method: "POST",
           body: formData,
         });

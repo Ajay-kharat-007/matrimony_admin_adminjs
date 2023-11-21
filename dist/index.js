@@ -3,12 +3,22 @@ import AdminJSExpress from '@adminjs/express';
 import express from 'express';
 import * as AdminJSMongoose from '@adminjs/mongoose';
 import mongoose from 'mongoose';
-import { Components, componentLoader } from './Components.js';
-import { UsersModel } from './User.model.js';
-import { MarriedUsersModel } from './Married.model.js';
+import { Components, componentLoader } from './components/Components.js';
+import { UsersModel } from './models/User.model.js';
+import { MarriedUsersModel } from './models/Married.model.js';
+import userRoute from './router/userRoutes.js';
+import userdataRoute from './router/userdataRoutes.js';
+import masterRoute from './router/masterRoutes.js';
+import csvRoute from './router/csvRoutes.js';
+import mailRoute from './router/mailRoutes.js';
+import bodyParser from 'body-parser';
+import { errorHandler } from './middleware/errorHandler.js';
+import dotenv from 'dotenv';
+import cors from 'cors';
 import MongoStore from 'connect-mongo';
 import * as url from 'url';
-const PORT = 3000;
+dotenv.config();
+const PORT = process.env.PORT || 3000;
 AdminJS.registerAdapter({
     Resource: AdminJSMongoose.Resource,
     Database: AdminJSMongoose.Database
@@ -21,8 +31,8 @@ const authenticate = async (email, password) => {
         }
         console.log(user);
         if (user.password == password) {
-            return Promise.resolve(user);
             if (user.role == "admin") {
+                return Promise.resolve(user);
             }
             else {
                 console.log("You are not admin");
@@ -211,6 +221,7 @@ const start = async () => {
     const app = express();
     const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
     app.use(express.static(__dirname + '/public'));
+    app.use(express.static(__dirname + './uploads'));
     const admin = new AdminJS({
         assets: {
             styles: ["/custom.css"]
@@ -502,7 +513,7 @@ const start = async () => {
         branding: {
             companyName: "धर्मादाय संस्था",
             logo: false,
-            favicon: 'http://localhost:5001/vaishya vani.png',
+            favicon: 'http://localhost:3000/vaishya vani.png',
         },
         dashboard: {
             component: Components.MyDashboard
@@ -525,7 +536,18 @@ const start = async () => {
         },
         name: "adminjs",
     });
+    app.use(cors());
     app.use(admin.options.rootPath, adminRouter);
+    app.use(bodyParser.json());
+    app.use("/api/users", userRoute);
+    app.use("/api/userdata", userdataRoute);
+    app.use("/api/masters-dropdown", masterRoute);
+    app.use("/mail", mailRoute);
+    app.use("/importUser", csvRoute);
+    app.use("/", (req, res) => {
+        res.send("Server Is Running Perfectly !!");
+    });
+    app.use(errorHandler);
     app.listen(PORT, () => {
         console.log(`AdminJS started on http://localhost:${PORT}${admin.options.rootPath}`);
     });
