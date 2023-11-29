@@ -531,7 +531,7 @@ const start = async () => {
     app.use("/mail", mailRoute);
     app.use("/importUser", csvRoute);
     app.get("/", (req, res) => {
-        res.redirect('http://localhost:3000/admin');
+        res.redirect('http://localhost:3000/admin/resources/Users');
     });
     app.use(errorHandler);
     app.listen(PORT, () => {
