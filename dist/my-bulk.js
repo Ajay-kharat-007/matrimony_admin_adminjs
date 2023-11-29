@@ -19,7 +19,7 @@ const MyInputComponent = (props) => {
                 });
                 if (response.ok) {
                     console.log("File uploaded successfully!", props);
-                    location.href = 'http://localhost:3000' + props.resource.href;
+                    location.href = 'https://matrimony-admin.onrender.com' + props.resource.href;
                 }
                 else {
                     console.error("File upload failed!");

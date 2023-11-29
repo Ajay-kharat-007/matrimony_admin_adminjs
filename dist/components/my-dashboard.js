@@ -11,6 +11,6 @@ const MyDashboardComponent = (props) => {
     return (React.createElement(React.Fragment, null,
         React.createElement("div", { style: style },
             React.createElement("div", null,
-                React.createElement("img", { src: "http://localhost:3000/vaisha-vani-logo.png", alt: "\u0927\u0930\u094D\u092E\u093E\u0926\u093E\u092F \u0938\u0902\u0938\u094D\u0925\u093E" })))));
+                React.createElement("img", { src: "https://matrimony-admin.onrender.com/vaisha-vani-logo.png", alt: "\u0927\u0930\u094D\u092E\u093E\u0926\u093E\u092F \u0938\u0902\u0938\u094D\u0925\u093E" })))));
 };
 export default MyDashboardComponent;

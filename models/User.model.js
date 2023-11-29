@@ -86,7 +86,7 @@ const UsersSchema = new Schema({
     isSubCastePreferred: { type: String, enum: ["Yes", "No"] },
     isPartnerOutsideMumbaiPreferred: { type: String, enum: ["Yes", "No"] },
     otherExpectationsFromPartner: String,
-    paymentStatus: { type: String, enum: ["Pending", "Successful"] },
+    paymentStatus: { type: String, enum: ["Pending", "Successfull"] },
     subscriptionStartDate: Date,
     subscriptionEndDate: Date,
     role: String,

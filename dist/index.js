@@ -513,7 +513,7 @@ const start = async () => {
         branding: {
             companyName: "धर्मादाय संस्था",
             logo: false,
-            favicon: 'http://localhost:3000/vaishya vani.png',
+            favicon: 'https://matrimony-admin.onrender.com/vaishya vani.png',
         },
         dashboard: {
             component: Components.MyDashboard
@@ -521,21 +521,7 @@ const start = async () => {
         componentLoader,
         rootPath: "/admin"
     });
-    const adminRouter = AdminJSExpress.buildAuthenticatedRouter(admin, {
-        authenticate,
-        cookieName: "adminjs",
-        cookiePassword: "sessionsecret",
-    }, null, {
-        store: sessionStore,
-        resave: true,
-        saveUninitialized: true,
-        secret: "sessionsecret",
-        cookie: {
-            httpOnly: process.env.NODE_ENV === "production",
-            secure: process.env.NODE_ENV === "production",
-        },
-        name: "adminjs",
-    });
+    const adminRouter = AdminJSExpress.buildRouter(admin);
     app.use(cors());
     app.use(admin.options.rootPath, adminRouter);
     app.use(bodyParser.json());
@@ -544,8 +530,8 @@ const start = async () => {
     app.use("/api/masters-dropdown", masterRoute);
     app.use("/mail", mailRoute);
     app.use("/importUser", csvRoute);
-    app.use("/", (req, res) => {
-        res.send("Server Is Running Perfectly !!");
+    app.get("/", (req, res) => {
+        res.redirect('http://localhost:3000/admin');
     });
     app.use(errorHandler);
     app.listen(PORT, () => {

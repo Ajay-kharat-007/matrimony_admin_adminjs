@@ -90,6 +90,7 @@ const UsersSchema = new Schema({
     isPartnerOutsideMumbaiPreferred: { type: String, enum: ["Yes", "No"] },
     otherExpectationsFromPartner: String,
     paymentStatus: { type: String, enum: ["Pending", "Successfull"] },
+    subscription: { type: String, enum: ["1", "2"] },
     subscriptionStartDate: Date,
     subscriptionEndDate: Date,
     role: { type: String, enum: ['admin', 'user'] }

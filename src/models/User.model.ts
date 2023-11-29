@@ -65,10 +65,11 @@ export interface IUser extends Document {
   isSubCastePreferred?: "Yes" | "No";
   isPartnerOutsideMumbaiPreferred?: "Yes" | "No";
   otherExpectationsFromPartner?: string;
-  paymentStatus?: "Pending" | "Successful";
+  paymentStatus?: "Pending" | "Successfull";
+  subscription?: "1" | "2";
   subscriptionStartDate?: Date;
   subscriptionEndDate?: Date;
-  role?:  "admin" | "user";
+  role?: "admin" | "user";
 }
 
 const UsersSchema = new Schema<IUser>({
@@ -76,7 +77,7 @@ const UsersSchema = new Schema<IUser>({
   middleName: { type: String },
   lastName: { type: String },
   fullName: String,
-  imagePath : String,
+  imagePath: String,
   email: String,
   phone: String,
   image: String,
@@ -162,9 +163,10 @@ const UsersSchema = new Schema<IUser>({
   isPartnerOutsideMumbaiPreferred: { type: String, enum: ["Yes", "No"] },
   otherExpectationsFromPartner: String,
   paymentStatus: { type: String, enum: ["Pending", "Successfull"] },
+  subscription: { type: String, enum: ["1", "2"] },
   subscriptionStartDate: Date,
   subscriptionEndDate: Date,
-  role: {type : String, enum : ['admin', 'user']}
+  role: { type: String, enum: ['admin', 'user'] }
 })
 
 export const UsersModel = model<IUser>("Users", UsersSchema);

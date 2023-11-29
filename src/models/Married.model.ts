@@ -1,35 +1,3 @@
-// import { Schema, model, Document } from "mongoose";
-
-// export interface IUser extends Document {
-//   firstName: string;
-//   middleName: string;
-//   lastName: string;
-//   fullName?: string;
-//   age?: string;
-//   gender?: string;
-//   email?: string;
-//   phone?: string;
-//   image?: string;
-//   role?: string;
-// }
-
-// const UsersSchema = new Schema<IUser>({
-//   firstName: { type: String, required: [true, "Please Enter First Name"] },
-//   middleName: { type: String, required: [true, "Please Enter Middle Name"] },
-//   lastName: { type: String, required: [true, "Please Enter Last Name"] },
-//   fullName: String,
-//   age: String,
-//   gender: String,
-//   email: String,
-//   phone: String,
-//   image: String,
-//   role : String
-// })
-
-// export const MarriedUsersModel = model<IUser>("MarriedUsers", UsersSchema);
-
-
-
 import { Schema, model, Document } from "mongoose";
 
 export interface IUser extends Document {
@@ -41,7 +9,6 @@ export interface IUser extends Document {
   email?: string;
   image?: string;
   phone?: string;
-  age?: string;
   password?: string;
   status?: "active" | "inactive";
   gender?: "male" | "female";
@@ -49,6 +16,7 @@ export interface IUser extends Document {
   dateOfBirth?: Date;
   height?: string;
   weight?: string;
+  age?: string;
   bloodGroup?: string;
   whatsappNumber?: string;
   parentName?: string;
@@ -97,20 +65,21 @@ export interface IUser extends Document {
   isSubCastePreferred?: "Yes" | "No";
   isPartnerOutsideMumbaiPreferred?: "Yes" | "No";
   otherExpectationsFromPartner?: string;
-  paymentStatus?: "Pending" | "Successful";
+  paymentStatus?: "Pending" | "Successfull";
+  subscription?: "1" | "2";
   subscriptionStartDate?: Date;
   subscriptionEndDate?: Date;
-  role?:  "admin" | "user";
+  role?: "admin" | "user";
 }
 
 const UsersSchema = new Schema<IUser>({
-  firstName: { type: String, required: [true, "Please Enter First Name"] },
-  middleName: { type: String, required: [true, "Please Enter Middle Name"] },
-  lastName: { type: String, required: [true, "Please Enter Last Name"] },
+  firstName: { type: String },
+  middleName: { type: String },
+  lastName: { type: String },
   fullName: String,
-  imagePath : String,
-  phone: String,
+  imagePath: String,
   email: String,
+  phone: String,
   image: String,
   password: String,
   status: { type: String, enum: ["active", "inactive"] },
@@ -118,8 +87,8 @@ const UsersSchema = new Schema<IUser>({
   maritalStatus: { type: String, enum: ["Unmarried", "Divorced", "Widow/Widower"] },
   dateOfBirth: Date,
   height: String,
-  weight: String,
   age: String,
+  weight: String,
   bloodGroup: String,
   whatsappNumber: String,
   parentName: String,
@@ -193,10 +162,11 @@ const UsersSchema = new Schema<IUser>({
   isSubCastePreferred: { type: String, enum: ["Yes", "No"] },
   isPartnerOutsideMumbaiPreferred: { type: String, enum: ["Yes", "No"] },
   otherExpectationsFromPartner: String,
-  paymentStatus: { type: String, enum: ["Pending", "Successful"] },
+  paymentStatus: { type: String, enum: ["Pending", "Successfull"] },
+  subscription: { type: String, enum: ["1", "2"] },
   subscriptionStartDate: Date,
   subscriptionEndDate: Date,
-  role: {type : String, enum : ['admin', 'user']}
+  role: { type: String, enum: ['admin', 'user'] }
 })
 
 export const MarriedUsersModel = model<IUser>("MarriedUsers", UsersSchema);

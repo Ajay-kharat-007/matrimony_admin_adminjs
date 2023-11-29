@@ -80,6 +80,7 @@ export const login = asyncHandler(async (req: any, res: any) => {
     }
 
     const user = await UsersModel.findOne({ email });
+
     const userPassword = user.password == password;
 
     if (user.subscriptionEndDate < new Date()) {

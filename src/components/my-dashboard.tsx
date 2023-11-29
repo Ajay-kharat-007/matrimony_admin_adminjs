@@ -18,7 +18,7 @@ const MyDashboardComponent = (props) => {
     <>
       <div style={style}>
         <div>
-            <img src="http://localhost:3000/vaisha-vani-logo.png" alt="धर्मादाय संस्था" />
+            <img src="https://matrimony-admin.onrender.com/vaisha-vani-logo.png" alt="धर्मादाय संस्था" />
         </div>
       </div>
     </>

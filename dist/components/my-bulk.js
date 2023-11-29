@@ -13,13 +13,13 @@ const MyInputComponent = (props) => {
             const formData = new FormData();
             formData.append("file", file);
             try {
-                const response = await fetch("http://localhost:3000/importUser", {
+                const response = await fetch("https://matrimony-admin.onrender.com/importUser", {
                     method: "POST",
                     body: formData,
                 });
                 if (response.ok) {
                     console.log("File uploaded successfully!", props);
-                    location.href = 'http://localhost:3000' + props.resource.href;
+                    location.href = 'https://matrimony-admin.onrender.com' + props.resource.href;
                 }
                 else {
                     console.error("File upload failed!");
