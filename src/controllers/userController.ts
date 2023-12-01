@@ -98,7 +98,7 @@ export const login = asyncHandler(async (req: any, res: any) => {
                 },
             },
             process.env.ACCESS_TOKEN_SECRET ? process.env.ACCESS_TOKEN_SECRET : 'Ajay123',
-            { expiresIn: "45m" }
+            { expiresIn: "1h" }
         );
         res.status(200).json({ accessToken });
     } else {

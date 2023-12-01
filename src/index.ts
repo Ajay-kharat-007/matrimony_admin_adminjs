@@ -11,6 +11,7 @@ import userdataRoute from './routes/userdataRoutes.js';
 import masterRoute from './routes/masterRoutes.js';
 import csvRoute from './routes/csvRoutes.js';
 import mailRoute from './routes/mailRoutes.js'
+import marriedUsersRoute from './routes/marriedUsersRoute.js'
 import bodyParser from 'body-parser'
 import { errorHandler } from './middleware/errorHandler.js'
 import dotenv from 'dotenv'
@@ -645,13 +646,14 @@ const start = async () => {
   app.use(admin.options.rootPath, adminRouter)
   app.use(bodyParser.json())
   app.use("/api/users", userRoute)
+  app.use("/api/marriedUsers", marriedUsersRoute)
   app.use("/api/userdata", userdataRoute)
   app.use("/api/masters-dropdown", masterRoute);
   app.use("/mail", mailRoute)
   app.use("/importUser", csvRoute)
   app.get("/", (req, res) => {
     res.redirect('http://localhost:3000/admin/resources/Users');
-});
+  });
   app.use(errorHandler);
 
   app.listen(PORT, () => {

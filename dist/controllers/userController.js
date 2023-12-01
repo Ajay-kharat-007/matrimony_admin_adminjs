@@ -71,7 +71,7 @@ export const login = asyncHandler(async (req, res) => {
                 email: user.email,
                 id: user.id,
             },
-        }, process.env.ACCESS_TOKEN_SECRET ? process.env.ACCESS_TOKEN_SECRET : 'Ajay123', { expiresIn: "45m" });
+        }, process.env.ACCESS_TOKEN_SECRET ? process.env.ACCESS_TOKEN_SECRET : 'Ajay123', { expiresIn: "1h" });
         res.status(200).json({ accessToken });
     }
     else {

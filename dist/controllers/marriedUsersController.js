@@ -1,24 +1,9 @@
 import asyncHandler from 'express-async-handler';
-import { UsersModel } from '../models/User.model.js';
+import { MarriedUsersModel } from '../models/Married.model.js';
 import mime from 'mime';
 import multer from 'multer';
 import imageModel from '../models/Image.model.js';
 export const getContact = asyncHandler(async (req, res) => {
-    try {
-        const contacts = await UsersModel.find({ user_id: req.user.id });
-        res.status(200).json({
-            status: 200,
-            data: contacts,
-        });
-    }
-    catch (error) {
-        res.status(500).json({
-            status: false,
-            message: error.message,
-        });
-    }
-});
-export const getAllContact = asyncHandler(async (req, res) => {
     try {
         const { brideOrGroom, maritalStatus, quantity, userCode, startingAge, endingAge } = req.query;
         const filter = {};
@@ -28,10 +13,10 @@ export const getAllContact = asyncHandler(async (req, res) => {
         if (userCode) {
             filter.userCode = userCode;
         }
-        if (maritalStatus == 'Married') {
+        if (maritalStatus) {
             filter.maritalStatus = maritalStatus;
         }
-        const contacts = await UsersModel.find(filter);
+        const contacts = await MarriedUsersModel.find(filter);
         if (startingAge && endingAge) {
             console.log(startingAge, endingAge);
             contacts.filter((elem) => {
@@ -72,7 +57,7 @@ export const createContact = asyncHandler(async (req, res) => {
             console.log(err);
         }
         else {
-            const newImage = new UsersModel({
+            const newImage = new MarriedUsersModel({
                 ...req.body,
                 listing: true,
                 user_id: req.user.id,
@@ -86,32 +71,33 @@ export const createContact = asyncHandler(async (req, res) => {
         }
     });
 });
-export const createUserContact = asyncHandler(async (req, res) => {
-    upload(req, res, async (err) => {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            let contact = await UsersModel.findOne({ email: req.body.email });
-            if (contact) {
-                console.log(contact);
-                return res.status(400).json({ 'message': "Email Already Exists !!" });
-            }
-            const newImage = new UsersModel({
-                ...req.body,
-                listing: true,
-                user_id: req.user.id,
-            });
-            newImage
-                .save()
-                .then(() => {
-                return res.status(201).json({ message: "Successfully Added" });
-            })
-                .catch((err) => {
-                console.log(err);
-            });
-        }
+export const updateContact = asyncHandler(async (req, res) => {
+    const contact = await MarriedUsersModel.findById(req.user.id);
+    if (!contact) {
+        res.status(404);
+        throw new Error('Contact not found');
+    }
+    const updatedContacts = await MarriedUsersModel.findByIdAndUpdate(req.user.id, req.body, {
+        new: true,
     });
+    res.status(200).json(updatedContacts);
+});
+export const deleteContact = asyncHandler(async (req, res) => {
+    console.log(req.params);
+    const contact = await MarriedUsersModel.findById(req.params.id);
+    if (!contact) {
+        return res.status(404).send('Contact not found');
+    }
+    await MarriedUsersModel.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: 'Contact deleted successfully' });
+});
+export const getContactById = asyncHandler(async (req, res) => {
+    const contact = await MarriedUsersModel.findById(req.params.id);
+    if (!contact) {
+        res.status(404);
+        throw new Error('Contact not found');
+    }
+    res.status(200).json(contact);
 });
 export const uploadImage = asyncHandler(async (req, res) => {
     upload(req, res, (err) => {
@@ -154,60 +140,5 @@ export const getImage = asyncHandler(async (req, res) => {
             status: false,
             message: error.message,
         });
-    }
-});
-export const updateContact = asyncHandler(async (req, res) => {
-    const contact = await UsersModel.findById(req.user.id);
-    if (!contact) {
-        res.status(404);
-        throw new Error('Contact not found');
-    }
-    const updatedContacts = await UsersModel.findByIdAndUpdate(req.user.id, req.body, {
-        new: true,
-    });
-    res.status(200).json(updatedContacts);
-});
-export const updateUserContact = asyncHandler(async (req, res) => {
-    const contact = await UsersModel.findById(req.params.id);
-    if (!contact) {
-        res.status(404);
-        throw new Error('Contact not found');
-    }
-    const updatedContacts = await UsersModel.findByIdAndUpdate(req.user.id, req.body, {
-        new: true,
-    });
-    res.status(200).json(updatedContacts);
-});
-export const deleteContact = asyncHandler(async (req, res) => {
-    console.log(req.params);
-    const contact = await UsersModel.findById(req.params.id);
-    if (!contact) {
-        return res.status(404).send('Contact not found');
-    }
-    await UsersModel.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: 'Contact deleted successfully' });
-});
-export const getContactById = asyncHandler(async (req, res) => {
-    const contact = await UsersModel.findById(req.params.id);
-    if (!contact) {
-        res.status(404);
-        throw new Error('Contact not found');
-    }
-    res.status(200).json(contact);
-});
-export const switchUser = asyncHandler(async (req, res) => {
-    try {
-        const contact = await UsersModel.findById(req.user.id);
-        if (!contact) {
-            res.status(404);
-            throw new Error('Contact not found');
-        }
-        const updatedContacts = await UsersModel.findByIdAndUpdate(req.user.id, { maritalStatus: 'Married' }, {
-            new: true,
-        });
-        res.status(200).json(updatedContacts);
-    }
-    catch (error) {
-        console.log(error);
     }
 });
